@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { CostCategory } from "@/types/calculator";
-import { exportToPdf } from "@/utils/exportToPdf";
+import { exportToPDF, getEmailTemplate } from "@/utils/exportToPdf"; // Fixed capitalization to match the actual export
 
 interface ResultActionsProps {
   categorizedCosts: CostCategory[];
@@ -22,7 +22,7 @@ export default function ResultActions({ categorizedCosts, values, businessName }
   const { toast } = useToast();
   
   const handleDownload = () => {
-    exportToPdf(categorizedCosts, values, businessName);
+    exportToPDF(businessName, categorizedCosts, values); // Fixed function name to match the export
     toast({
       title: "Download Started",
       description: "Your PDF is being generated and will download shortly.",
