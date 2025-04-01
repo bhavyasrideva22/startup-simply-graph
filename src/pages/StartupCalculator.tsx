@@ -66,132 +66,156 @@ export default function StartupCalculator() {
 
         <section className="py-8 md:py-12">
           <div className="container">
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-6">
-                    <TabsTrigger value="calculator" className="text-sm">
-                      <Calculator className="h-4 w-4 mr-2" />
-                      Calculator
-                    </TabsTrigger>
-                    <TabsTrigger value="guide" className="text-sm">
-                      <Info className="h-4 w-4 mr-2" />
-                      Guide
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="calculator" className="mt-0">
-                    <div className="bg-white rounded-lg border border-brand-mint/40 p-4 mb-6">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white">
-                          <BadgeIndianRupee className="h-4 w-4" />
+            <div className="grid gap-8">
+              {/* Combined calculator and charts in one container */}
+              <div className="grid lg:grid-cols-12 gap-8">
+                {/* Calculator section - 8 columns */}
+                <div className="lg:col-span-8">
+                  <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mb-6">
+                      <TabsTrigger value="calculator" className="text-sm">
+                        <Calculator className="h-4 w-4 mr-2" />
+                        Calculator
+                      </TabsTrigger>
+                      <TabsTrigger value="guide" className="text-sm">
+                        <Info className="h-4 w-4 mr-2" />
+                        Guide
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="calculator" className="mt-0">
+                      <div className="bg-white rounded-lg border border-brand-mint/40 p-4 mb-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white">
+                            <BadgeIndianRupee className="h-4 w-4" />
+                          </div>
+                          <h2 className="text-lg font-medium text-brand-green">Business Information</h2>
                         </div>
-                        <h2 className="text-lg font-medium text-brand-green">Business Information</h2>
-                      </div>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="business-name">Business Name</Label>
-                          <Input
-                            id="business-name"
-                            placeholder="Enter your business name"
-                            value={businessName}
-                            onChange={(e) => setBusinessName(e.target.value)}
-                            className="mt-1.5"
-                          />
+                        <div className="space-y-4">
+                          <div>
+                            <Label htmlFor="business-name">Business Name</Label>
+                            <Input
+                              id="business-name"
+                              placeholder="Enter your business name"
+                              value={businessName}
+                              onChange={(e) => setBusinessName(e.target.value)}
+                              className="mt-1.5"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {calculatorData.map((category, index) => (
-                      <CostCategory
-                        key={category.title}
-                        title={category.title}
-                        icon={category.icon}
-                        items={category.items}
-                        values={values}
-                        onChange={handleValueChange}
-                        initialExpanded={index === 0}
-                      />
-                    ))}
-                  </TabsContent>
-                  <TabsContent value="guide">
-                    <Card className="bg-white border-brand-mint/40">
-                      <CardContent className="p-6">
-                        <h2 className="text-xl font-semibold text-brand-green mb-4">Understanding Startup Costs in India</h2>
-                        
-                        <div className="space-y-6">
-                          <div>
-                            <h3 className="text-lg font-medium text-brand-charcoal mb-2">
-                              Why Calculate Startup Costs?
-                            </h3>
-                            <p className="text-muted-foreground">
-                              Accurately estimating your startup costs is crucial for securing funding, creating realistic financial projections, and ensuring your business has enough capital to reach profitability. Many entrepreneurs underestimate their initial costs, leading to cash flow problems within the first year.
-                            </p>
-                          </div>
+                      {calculatorData.map((category, index) => (
+                        <CostCategory
+                          key={category.title}
+                          title={category.title}
+                          icon={category.icon}
+                          items={category.items}
+                          values={values}
+                          onChange={handleValueChange}
+                          initialExpanded={index === 0}
+                        />
+                      ))}
+
+                      {/* Results Action Buttons */}
+                      <div className="mt-6">
+                        <ResultActions 
+                          categorizedCosts={calculatorData} 
+                          values={values} 
+                          businessName={businessName}
+                        />
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="guide">
+                      <Card className="bg-white border-brand-mint/40">
+                        <CardContent className="p-6">
+                          <h2 className="text-xl font-semibold text-brand-green mb-4">Understanding Startup Costs in India</h2>
                           
-                          <div>
-                            <h3 className="text-lg font-medium text-brand-charcoal mb-2">
-                              One-Time vs. Ongoing Costs
-                            </h3>
-                            <p className="text-muted-foreground">
-                              Startup costs typically fall into two categories:
-                            </p>
-                            <ul className="list-disc list-inside space-y-1 mt-2 text-muted-foreground">
-                              <li><span className="font-medium text-brand-charcoal">One-time costs:</span> Expenses that occur only during the startup phase, such as business registration, initial inventory, equipment purchases, and security deposits.</li>
-                              <li><span className="font-medium text-brand-charcoal">Ongoing costs:</span> Regular expenses that continue after your business is operational, such as rent, utilities, salaries, and marketing.</li>
-                            </ul>
+                          <div className="space-y-6">
+                            <div>
+                              <h3 className="text-lg font-medium text-brand-charcoal mb-2">
+                                Why Calculate Startup Costs?
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Accurately estimating your startup costs is crucial for securing funding, creating realistic financial projections, and ensuring your business has enough capital to reach profitability. Many entrepreneurs underestimate their initial costs, leading to cash flow problems within the first year.
+                              </p>
+                            </div>
+                            
+                            <div>
+                              <h3 className="text-lg font-medium text-brand-charcoal mb-2">
+                                One-Time vs. Ongoing Costs
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Startup costs typically fall into two categories:
+                              </p>
+                              <ul className="list-disc list-inside space-y-1 mt-2 text-muted-foreground">
+                                <li><span className="font-medium text-brand-charcoal">One-time costs:</span> Expenses that occur only during the startup phase, such as business registration, initial inventory, equipment purchases, and security deposits.</li>
+                                <li><span className="font-medium text-brand-charcoal">Ongoing costs:</span> Regular expenses that continue after your business is operational, such as rent, utilities, salaries, and marketing.</li>
+                              </ul>
+                            </div>
+                            
+                            <div>
+                              <h3 className="text-lg font-medium text-brand-charcoal mb-2">
+                                How to Use This Calculator
+                              </h3>
+                              <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                                <li>Enter your business name (optional).</li>
+                                <li>Open each category and adjust the cost estimates to match your specific business needs.</li>
+                                <li>Review the summary and charts to understand your total startup investment.</li>
+                                <li>Download or email your detailed cost breakdown for reference or to share with stakeholders.</li>
+                              </ol>
+                            </div>
+                            
+                            <div>
+                              <h3 className="text-lg font-medium text-brand-charcoal mb-2">
+                                Planning for Contingencies
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Financial experts typically recommend adding a contingency fund of 15-25% to your estimated startup costs to account for unexpected expenses and delays. This buffer is especially important for first-time entrepreneurs who may encounter unforeseen challenges.
+                              </p>
+                            </div>
+                            
+                            <div className="bg-brand-mint/20 p-4 rounded-lg">
+                              <h3 className="text-lg font-medium text-brand-green mb-2 flex items-center">
+                                <Goal className="h-5 w-5 mr-2" />
+                                Pro Tip
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Consider creating three different versions of your startup budget: a bare minimum scenario, a realistic scenario, and an optimal scenario. This approach helps you understand the range of capital you might need and allows for flexibility in your business planning.
+                              </p>
+                            </div>
                           </div>
-                          
-                          <div>
-                            <h3 className="text-lg font-medium text-brand-charcoal mb-2">
-                              How to Use This Calculator
-                            </h3>
-                            <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
-                              <li>Enter your business name (optional).</li>
-                              <li>Open each category and adjust the cost estimates to match your specific business needs.</li>
-                              <li>Review the summary and charts to understand your total startup investment.</li>
-                              <li>Download or email your detailed cost breakdown for reference or to share with stakeholders.</li>
-                            </ol>
-                          </div>
-                          
-                          <div>
-                            <h3 className="text-lg font-medium text-brand-charcoal mb-2">
-                              Planning for Contingencies
-                            </h3>
-                            <p className="text-muted-foreground">
-                              Financial experts typically recommend adding a contingency fund of 15-25% to your estimated startup costs to account for unexpected expenses and delays. This buffer is especially important for first-time entrepreneurs who may encounter unforeseen challenges.
-                            </p>
-                          </div>
-                          
-                          <div className="bg-brand-mint/20 p-4 rounded-lg">
-                            <h3 className="text-lg font-medium text-brand-green mb-2 flex items-center">
-                              <Goal className="h-5 w-5 mr-2" />
-                              Pro Tip
-                            </h3>
-                            <p className="text-muted-foreground">
-                              Consider creating three different versions of your startup budget: a bare minimum scenario, a realistic scenario, and an optimal scenario. This approach helps you understand the range of capital you might need and allows for flexibility in your business planning.
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                </Tabs>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+
+                {/* Charts section - 4 columns */}
+                <div className="lg:col-span-4 space-y-6">
+                  {/* Cost Chart */}
+                  <CostChart categorizedCosts={calculatorData} values={values} />
+                  
+                  {/* Cost Timeline */}
+                  <CostTimeline categorizedCosts={calculatorData} values={values} />
+                  
+                  {/* Total Cost Summary (simplified) */}
+                  <Card className="bg-white shadow-md border-brand-mint/40">
+                    <CardContent className="p-4">
+                      <div className="text-center">
+                        <h3 className="text-lg font-medium text-brand-green mb-2">Total Startup Cost</h3>
+                        <p className="text-2xl font-bold text-brand-green">
+                          ₹{totalCost.toLocaleString('en-IN')}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
 
-              <div className="space-y-6">
-                <div className="sticky top-20">
-                  <SummaryCard categorizedCosts={calculatorData} values={values} />
-                  
-                  <div className="mt-6 space-y-6">
-                    <CostChart categorizedCosts={calculatorData} values={values} />
-                    <CostTimeline categorizedCosts={calculatorData} values={values} />
-                  </div>
-                  
-                  <ResultActions 
-                    categorizedCosts={calculatorData} 
-                    values={values} 
-                    businessName={businessName}
-                  />
+              {/* Ad space */}
+              <div className="w-full bg-white border border-brand-mint/40 rounded-lg p-4 min-h-[250px] flex items-center justify-center">
+                <div className="text-center text-muted-foreground bg-[#0000001a] w-full h-full min-h-[200px] flex items-center justify-center rounded-md">
+                  <p>Google Ad Space</p>
                 </div>
               </div>
             </div>
